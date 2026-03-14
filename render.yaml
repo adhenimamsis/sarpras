@@ -1,12 +1,10 @@
 services:
   - type: web
     name: sarpras-puskesmas
-    runtime: php
+    env: docker
     plan: free
     autoDeploy: true
     healthCheckPath: /health
-    buildCommand: bash scripts/render-build.sh
-    startCommand: bash scripts/render-start.sh
     disk:
       name: sarpras-storage
       mountPath: /var/data
