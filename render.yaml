@@ -1,0 +1,68 @@
+services:
+  - type: web
+    name: sarpras-puskesmas
+    runtime: php
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /health
+    buildCommand: bash scripts/render-build.sh
+    startCommand: bash scripts/render-start.sh
+    disk:
+      name: sarpras-storage
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: APP_NAME
+        value: SimSarpras Bendan
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        value: https://CHANGE-ME.onrender.com
+      - key: LOG_CHANNEL
+        value: stack
+      - key: LOG_LEVEL
+        value: info
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: sarpras-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: sarpras-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: sarpras-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: sarpras-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: sarpras-db
+          property: password
+      - key: CACHE_STORE
+        value: database
+      - key: SESSION_DRIVER
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: FILESYSTEM_DISK
+        value: public
+      - key: LARAVEL_STORAGE_PATH
+        value: /var/data/storage
+      - key: FONNTE_ENABLED
+        value: "false"
+
+databases:
+  - name: sarpras-db
+    plan: free
+    databaseName: sarpras
+    user: sarpras_user
